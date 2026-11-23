@@ -61,3 +61,6 @@ This removes only Molina's hook entries (after a backup) and asks before deletin
 ## License
 
 [MIT](LICENSE): free to use, copy, change and share, as long as the copyright notice stays with it.
+
+---
+<sub>Built with [Claude Code](https://claude.com/claude-code) · Compiled by Claude - Opus 5.5</sub>
