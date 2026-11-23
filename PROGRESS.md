@@ -1,7 +1,7 @@
 # Molina — PROGRESS
 
 **Now:** Stage 12 — one day of real use (Code + Chat), then a fix list
-**Next:** —
+**Next:** upload `skill\molina-setup.zip` to Agensi (free) after friend testing · On hold: `skill\molina-setup\setup.ps1` (owner's call)
 
 Rules: one stage at a time · run the check · tick it · one status line · wait for the owner's OK.
 

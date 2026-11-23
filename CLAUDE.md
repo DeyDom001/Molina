@@ -41,6 +41,7 @@ D:\Claude Code\Molina\
   setup\             install.py, uninstall.py, build_exe.py
   tools\             send_fake.py (--test: hook fixtures), test_care.py, sprite_preview.py
   plugin\molina-pet\ the /pet Claude Code plugin (listed by .claude-plugin\marketplace.json)
+  skill\molina-setup\ SKILL.md: an agent skill that installs Molina from GitHub (zip it for Agensi: SKILL.md at the zip's root)
   samples\           fake_events\*.json (fixtures), PROGRESS.md sample
 ```
 

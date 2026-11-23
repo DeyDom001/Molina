@@ -30,6 +30,8 @@ Optional exe: `.venv\Scripts\python -m pip install PyInstaller; .venv\Scripts\py
 
 New Claude Code sessions (terminal or the desktop app's Code tab) now update her. Claude **Chat** in the desktop app is followed too: while a reply is being written she shows its current step ("Searching the web", "Reading a page", "Thinking…") and then **Done**. Chat has no hooks, so this reads the app window. It only works while the chat is on screen, and an app update may need the labels adjusting in `molina\chat_watch.ps1`.
 
+**Let Claude do it:** copy the `skill\molina-setup` folder into `%USERPROFILE%\.claude\skills\`, then ask Claude Code to "set up Molina". The skill checks the requirements, says what it will change, and runs the steps above.
+
 ## Use
 
 | Do this | Gets you |
