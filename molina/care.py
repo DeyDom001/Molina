@@ -37,8 +37,8 @@ class Care:
             p["xp"] = min(p["xp"], 500)
 
     def read_events(self):
-        if not EVENTS.exists():
-            return []
+        if not EVENTS.exists() or EVENTS.stat().st_size == self.p["events_pos"]:
+            return []  # nothing new (checked every 300 ms, so skip the read)
         data = EVENTS.read_bytes()
         pos = self.p["events_pos"]
         if pos > len(data):  # the hook trimmed the file: continue after the last line we counted

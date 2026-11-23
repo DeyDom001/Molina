@@ -36,7 +36,7 @@ Molina window (PySide6) ──polls every 300 ms──▶ sessions\*.json + pet.
 D:\Claude Code\Molina\
   CLAUDE.md, PROGRESS.md, README.md
   hook\              molina_hook.py (the only file Claude Code runs)
-  molina\            app package (the window)
+  molina\            app package: __main__, window, sprites, ui (bubble), panel, care, sound, state, startup
   setup\             install.py, uninstall.py, build_exe.py
   tools\             send_fake.py, sprite_preview.py, test_hook.py
   samples\           fake_events\*.json (fixtures), PROGRESS.md sample
