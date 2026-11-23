@@ -8,6 +8,7 @@ from PySide6.QtWidgets import QApplication, QMenu, QSystemTrayIcon, QWidget
 
 from molina import sprites, startup, state, ui
 from molina.panel import Panel
+from molina.sound import Sounds
 
 SPRITE = 32       # base sprite size in px
 BUBBLE_H = 52     # room above her for the speech bubble
@@ -36,6 +37,9 @@ class PetWindow(QWidget):
         self.restore_position()
         self.tray = self.make_tray()
         self.panel = Panel(self)
+        self.sounds = Sounds()
+        self.seen = None  # session id -> last state, to chime on changes
+        self.last_needs = 0.0
 
     # --- settings -------------------------------------------------------
     def save(self):
@@ -120,9 +124,27 @@ class PetWindow(QWidget):
         self.sessions = state.sessions()
         if self.sessions:
             self.last_activity = max(self.last_activity, time.time() - state.age(self.sessions[0]["last_event"]))
+        self.alerts()
         anim = self.pick_anim()
         if anim != self.anim:
             self.anim, self.tick = anim, 0
+
+    def alerts(self):
+        now = time.time()
+        states = {s["session_id"]: s["state"] for s in self.sessions}
+        for sid, st in states.items():
+            if self.seen is not None and st != self.seen.get(sid) and st in ("waiting", "done", "error"):
+                self.chime({"waiting": "needs"}.get(st, st))
+                if st == "waiting":
+                    self.last_needs = now
+        if "waiting" in states.values() and now - self.last_needs >= 60:  # still waiting: remind once a minute
+            self.chime("needs")
+            self.last_needs = now
+        self.seen = states
+
+    def chime(self, name):
+        if not self.cfg["muted"]:
+            self.sounds.play(name)
 
     def current(self):
         """The session to show: one that needs the owner first, else the most recently active."""
