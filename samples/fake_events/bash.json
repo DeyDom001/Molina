@@ -1,0 +1,1 @@
+{"event":{"session_id":"fake1","cwd":"{project}","hook_event_name":"PreToolUse","tool_name":"Bash","tool_input":{"command":"adb devices"}},"expect":{"state":"running","action":"Running: adb devices"}}

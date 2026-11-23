@@ -1,0 +1,1 @@
+{"event":{"session_id":"fake1","cwd":"{project}","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"C:\\x\\window.py"}},"expect":{"state":"writing","action":"Editing window.py"}}

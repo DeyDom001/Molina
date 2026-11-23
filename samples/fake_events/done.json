@@ -1,0 +1,1 @@
+{"event":{"session_id":"fake1","cwd":"{project}","hook_event_name":"Stop"},"expect":{"state":"done","action":"Done"}}

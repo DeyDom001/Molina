@@ -1,0 +1,1 @@
+{"event":{"session_id":"fake1","cwd":"{project}","hook_event_name":"PreToolUse","tool_name":"WebFetch","tool_input":{"url":"https://example.com"}},"expect":{"state":"browsing","action":"Browsing the web"}}

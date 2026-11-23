@@ -1,0 +1,1 @@
+{"event":{"session_id":"fake1","cwd":"{project}","hook_event_name":"UserPromptSubmit","prompt":"hi"},"expect":{"state":"thinking","action":"Thinking…"}}

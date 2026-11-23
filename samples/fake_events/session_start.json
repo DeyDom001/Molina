@@ -1,0 +1,1 @@
+{"event":{"session_id":"fake1","cwd":"{project}","hook_event_name":"SessionStart","source":"startup"},"expect":{"state":"idle","action":"Session started"}}

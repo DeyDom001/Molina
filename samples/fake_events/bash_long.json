@@ -1,0 +1,1 @@
+{"event":{"session_id":"fake1","cwd":"{project}","hook_event_name":"PreToolUse","tool_name":"Bash","tool_input":{"command":"adb shell pm disable-user --user 0 com.example.bloat"}},"expect":{"state":"running","action":"Running: adb shell pm disable-user --user 0 com.…"}}

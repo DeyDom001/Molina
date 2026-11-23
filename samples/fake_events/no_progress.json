@@ -1,0 +1,1 @@
+{"event":{"session_id":"fake2","cwd":"{samples}","hook_event_name":"UserPromptSubmit"},"expect":{"state":"thinking","stage_text":null}}

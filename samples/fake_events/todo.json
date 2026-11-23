@@ -1,0 +1,1 @@
+{"event":{"session_id":"fake1","cwd":"{project}","hook_event_name":"PreToolUse","tool_name":"TodoWrite","tool_input":{}},"expect":{"state":"thinking","action":"Updating the plan"}}
