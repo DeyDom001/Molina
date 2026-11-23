@@ -13,8 +13,8 @@ Rules: one stage at a time · run the check · tick it · one status line · wai
   - Check: backup file exists; existing hooks and mods untouched; a real session writes `sessions\<id>.json`; uninstall removes only Molina's entries
 - [x] 3. Window: transparent, frameless, always on top, drag, position memory, tray icon
   - Check: drag, restart → same spot; tray Show/Hide/Quit work; no taskbar button
-- [ ] 4. Molina sprite + palette + idle animation (blink, breathing) + `tools\sprite_preview.py`
-  - Check: owner approves the look in the preview at 3× — built; waiting for owner's look
+- [x] 4. Molina sprite + palette + idle animation (blink, breathing) + `tools\sprite_preview.py`
+  - Check: owner approves the look in the preview at 3× — approved (pink redesign, 2026-11-23)
 - [x] 5. All state animations, connected to live state
   - Check: each fake event shows the right animation; asleep after 10 min idle
 - [x] 6. Speech bubble: action + stage, most recent session, fade after done
