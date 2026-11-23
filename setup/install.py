@@ -25,6 +25,9 @@ def load_settings():
 def backup():
     if SETTINGS.exists():
         dst = SETTINGS.with_name(f"settings.json.molina-backup-{time.strftime('%Y%m%d-%H%M')}")
+        if dst.exists():  # same minute: keep the earlier, more original backup
+            print(f"Backup: {dst} (kept from earlier this minute)")
+            return
         shutil.copy2(SETTINGS, dst)
         print(f"Backup: {dst}")
 

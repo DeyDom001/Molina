@@ -21,9 +21,19 @@ Molina is a small pixel axolotl in her own always-on-top window on the Windows d
 - Creates `%USERPROFILE%\.molina\` for her state, sounds and logs.
 - Runs a small window in the background. A hidden PowerShell script reads the Claude desktop app's window (its accessibility labels) so she can follow Claude Chat too. Nothing is sent anywhere.
 
-## Install
+## Install (one command)
 
-Run these in PowerShell. Ask the user where to put Molina; the default is `%USERPROFILE%\Molina`.
+`setup.ps1`, next to this file, does steps 1–4 below: it checks Python, clones the repo, creates the venv, installs PySide6, adds the hooks and starts her. It's safe to run again, and it stops with a clear message if something is missing. Ask the user where to put Molina (default `%USERPROFILE%\Molina`), then:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File "<this skill's folder>\setup.ps1" -Dir "$env:USERPROFILE\Molina"
+```
+
+Add `-NoStart` to install without starting her. Without git, the user downloads the ZIP from the GitHub page and passes its unzipped folder as `-Dir`. Then go on with step 5.
+
+## Install (step by step)
+
+The same steps by hand, if the script can't run. Run these in PowerShell.
 
 1. Get the code:
    ```powershell
