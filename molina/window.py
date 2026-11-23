@@ -6,7 +6,7 @@ from PySide6.QtCore import QPoint, Qt, QTimer
 from PySide6.QtGui import QGuiApplication, QIcon, QPainter
 from PySide6.QtWidgets import QApplication, QMenu, QSystemTrayIcon, QWidget
 
-from molina import sprites, state, ui
+from molina import sprites, startup, state, ui
 from molina.panel import Panel
 
 SPRITE = 32       # base sprite size in px
@@ -46,7 +46,46 @@ class PetWindow(QWidget):
         self.setWindowFlag(Qt.WindowStaysOnTopHint, self.cfg["on_top"])
 
     def apply_scale(self):
+        bottom = self.y() + self.height()
         self.setFixedSize(WIDTH, BUBBLE_H + SPRITE * self.cfg["scale"])
+        self.move(self.x(), bottom - self.height())  # keep her feet where they were
+
+    def set(self, key, value):
+        self.cfg[key] = value
+        if key == "scale":
+            self.apply_scale()
+        if key == "on_top":
+            self.apply_on_top()
+            self.show()  # changing window flags hides the window
+        self.save()
+
+    # --- right-click menu -----------------------------------------------
+    def contextMenuEvent(self, e):
+        m = QMenu(self)
+        m.addAction("Hide", self.hide)
+        self.check(m, "Mute sounds", self.cfg["muted"], lambda on: self.set("muted", on))
+        m.addAction("Wake" if self.manual_sleep else "Sleep", self.toggle_sleep)
+        self.check(m, "Always on top", self.cfg["on_top"], lambda on: self.set("on_top", on))
+        size = m.addMenu("Size")
+        for n in (2, 3, 4, 5):
+            self.check(size, f"{n}×", self.cfg["scale"] == n, lambda _, n=n: self.set("scale", n))
+        self.check(m, "Start with Windows", startup.enabled(), startup.toggle)
+        m.addSeparator()
+        m.addAction("Quit", QApplication.quit)
+        m.exec(e.globalPos())
+
+    @staticmethod
+    def check(menu, text, on, fn):
+        a = menu.addAction(text)
+        a.setCheckable(True)
+        a.setChecked(on)
+        a.toggled.connect(fn)
+
+    def toggle_sleep(self):
+        self.manual_sleep = not self.manual_sleep
+        if not self.manual_sleep:
+            self.last_activity = time.time()  # waking resets the 10-minute doze timer
+        self.poll()
 
     def pet_rect(self):
         s = SPRITE * self.cfg["scale"]
