@@ -48,7 +48,7 @@ D:\Claude Code\Molina\
 |---|---|
 | `session_id` | `abc123` |
 | `project` | `pova-tune-focus` (folder name of `cwd`) |
-| `cwd` | `C:\Users\vatha\...\pova-tune-focus` |
+| `cwd` | `C:\Users\you\...\pova-tune-focus` |
 | `state` | `thinking` / `reading` / `writing` / `running` / `searching` / `browsing` / `waiting` / `done` / `error` |
 | `action` | `Running: adb devices` |
 | `stage_index`, `stage_total`, `stage_text` | `4`, `16`, `1.3 Debloat batch 1 (disable) + test` |

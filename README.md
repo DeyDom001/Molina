@@ -4,19 +4,24 @@ A small pixel axolotl that lives on your Windows desktop and shows what Claude C
 
 ## Install
 
-Needs Windows, Python 3.12, and this folder at `D:\Claude Code\Molina`.
+Needs Windows 10/11, [Python 3.10+](https://www.python.org/downloads/) (3.12 tested) and [Claude Code](https://claude.com/claude-code).
 
-1. Create the venv (once):
+1. Get the code: **Code → Download ZIP** on GitHub and unzip it anywhere, or `git clone REPO_URL`. Open PowerShell in that folder.
+2. Create the venv (once):
    ```powershell
-   py -3.12 -m venv .venv; .venv\Scripts\python -m pip install PySide6 PyInstaller
+   py -m venv .venv; .venv\Scripts\python -m pip install PySide6
    ```
-2. Add Molina's hooks to Claude Code (backs up `~\.claude\settings.json` first and keeps all your other hooks):
+3. Add Molina's hooks to Claude Code. This backs up `~\.claude\settings.json` first and keeps all your other hooks. The hook points at this folder, so if you move the folder later, run it again.
    ```powershell
    .venv\Scripts\python setup\install.py
    ```
-3. Start her:
-   - from source: `.venv\Scripts\pythonw -m molina`
-   - or build the exe: `.venv\Scripts\python setup\build_exe.py`, then run `dist\Molina\Molina.exe`. On the owner's PC, Bitdefender's Advanced Threat Defense blocks the exe even with a folder exception, so Molina runs from source there. It works the same, but keep the `.venv` folder.
+4. Start her:
+   ```powershell
+   Start-Process .venv\Scripts\pythonw.exe -ArgumentList '-m','molina'
+   ```
+   Right-click her → **Start with Windows** to have her start on her own after that.
+
+Optional exe: `.venv\Scripts\python -m pip install PyInstaller; .venv\Scripts\python setup\build_exe.py` builds `dist\Molina\Molina.exe`. Some antivirus tools (Bitdefender's Advanced Threat Defense, for example) block unsigned PyInstaller exes. Running from source works the same.
 
 New Claude Code sessions (terminal or the desktop app's Code tab) now update her. Claude **Chat** in the desktop app is followed too: while a reply is being written she shows its current step ("Searching the web", "Reading a page", "Thinking…") and then **Done**. Chat has no hooks, so this reads the app window. It only works while the chat is on screen, and an app update may need the labels adjusting in `molina\chat_watch.ps1`.
 
