@@ -1,9 +1,12 @@
 """Molina's frameless, transparent, always-on-top window and tray icon."""
-from PySide6.QtCore import QPoint, Qt
-from PySide6.QtGui import QAction, QColor, QGuiApplication, QPainter, QPixmap, QIcon
+import random
+import time
+
+from PySide6.QtCore import QPoint, Qt, QTimer
+from PySide6.QtGui import QGuiApplication, QIcon, QPainter
 from PySide6.QtWidgets import QApplication, QMenu, QSystemTrayIcon, QWidget
 
-from molina import state
+from molina import sprites, state
 
 SPRITE = 32       # base sprite size in px
 BUBBLE_H = 52     # room above her for the speech bubble
@@ -16,6 +19,11 @@ class PetWindow(QWidget):
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.cfg = state.load_config()
         self._press = None
+        self.anim = "idle"
+        self.tick = 0
+        self.next_blink = time.time() + 4
+        self.timer = QTimer(self, interval=1000 // sprites.FPS, timeout=self.step)
+        self.timer.start()
         self.apply_on_top()
         self.apply_scale()
         self.restore_position()
@@ -58,20 +66,24 @@ class PetWindow(QWidget):
         return tray
 
     def tray_icon(self):
-        pm = QPixmap(32, 32)
-        pm.fill(Qt.transparent)
-        self.paint_pet(QPainter(pm), 0, 0, 32)
-        return QIcon(pm)
+        return QIcon(sprites.pixmap("idle", 0, 1))
 
-    # --- drawing --------------------------------------------------------
-    def paint_pet(self, p, x, y, size):
-        p.setBrush(QColor("#4A4845"))
-        p.setPen(QColor("#141413"))
-        p.drawEllipse(x + 2, y + 2, size - 4, size - 4)
-        p.end()
+    # --- animation ------------------------------------------------------
+    def step(self):
+        self.tick += 1
+        self.update()
+
+    def blinking(self):
+        now = time.time()
+        if now > self.next_blink + 0.15:
+            self.next_blink = now + random.uniform(3, 6)
+        return now > self.next_blink
 
     def paintEvent(self, _):
-        self.paint_pet(QPainter(self), *self.pet_rect()[:3])
+        x, y, _, _ = self.pet_rect()
+        p = QPainter(self)
+        p.drawPixmap(x, y, sprites.pixmap(self.anim, self.tick, self.cfg["scale"], self.blinking()))
+        p.end()
 
     # --- mouse ----------------------------------------------------------
     def mousePressEvent(self, e):
