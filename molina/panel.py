@@ -75,7 +75,7 @@ class Panel(QWidget):
         sessions = self.pet.sessions
         if self.selected not in [s["session_id"] for s in sessions]:
             self.selected = sessions[0]["session_id"] if sessions else None
-        extra = self.pet.care.panel_sig() if getattr(self.pet, "care", None) else None
+        extra = self.pet.care.panel_sig()
         sig = json.dumps([sessions, self.selected, [duration(s["started"]) for s in sessions], extra], default=str)
         if sig == self.sig:  # rebuild only on change, so buttons are not swapped out mid-click
             return
@@ -95,9 +95,8 @@ class Panel(QWidget):
             lay.addWidget(label(f"LAST ACTIONS · {sel.get('project', '')}", title=True))
             for r in reversed(sel.get("recent", [])):
                 lay.addWidget(label(f"{r['time'][11:16]}  {r['action']}", muted=True))
-        if getattr(self.pet, "care", None):
-            lay.addWidget(label("MOLINA", title=True))
-            self.pet.care.add_to(lay)
+        lay.addWidget(label("MOLINA", title=True))
+        self.pet.care.add_to(lay)
         if self.isVisible():
             self.place()
 

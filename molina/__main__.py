@@ -11,6 +11,7 @@ def main():
     app.setQuitOnLastWindowClosed(False)  # hiding her must not quit; Quit is in the tray/menu
     w = PetWindow()
     w.show()
+    app.aboutToQuit.connect(w.care.save)
     sys.exit(app.exec())
 
 

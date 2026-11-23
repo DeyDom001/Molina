@@ -7,6 +7,7 @@ from PySide6.QtGui import QGuiApplication, QIcon, QPainter
 from PySide6.QtWidgets import QApplication, QMenu, QSystemTrayIcon, QWidget
 
 from molina import sprites, startup, state, ui
+from molina.care import Care
 from molina.panel import Panel
 from molina.sound import Sounds
 
@@ -36,6 +37,7 @@ class PetWindow(QWidget):
         self.apply_scale()
         self.restore_position()
         self.tray = self.make_tray()
+        self.care = Care(self.play_oneoff)
         self.panel = Panel(self)
         self.sounds = Sounds()
         self.seen = None  # session id -> last state, to chime on changes
@@ -128,6 +130,11 @@ class PetWindow(QWidget):
         anim = self.pick_anim()
         if anim != self.anim:
             self.anim, self.tick = anim, 0
+        self.care.update(self.anim)
+
+    def play_oneoff(self, anim):
+        self.oneoff = (anim, time.time() + 2 * sprites.frames(anim) / sprites.FPS)  # loop twice
+        self.poll()
 
     def alerts(self):
         now = time.time()
@@ -180,7 +187,7 @@ class PetWindow(QWidget):
         if s and self.anim != "asleep":
             fade = 11 - state.age(s["last_event"]) if s["state"] == "done" else 1  # fade out 10 s after done
             ui.paint_bubble(p, WIDTH, BUBBLE_H - 2, [s.get("action"), ui.stage_line(s)], min(1, fade))
-        p.drawPixmap(x, y, sprites.pixmap(self.anim, self.tick, self.cfg["scale"], self.blinking()))
+        p.drawPixmap(x, y, sprites.pixmap(self.anim, self.tick, self.cfg["scale"], self.blinking(), self.care.face(), self.care.acc()))
         p.end()
 
     # --- mouse ----------------------------------------------------------
