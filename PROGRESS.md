@@ -19,8 +19,8 @@ Rules: one stage at a time · run the check · tick it · one status line · wai
   - Check: each fake event shows the right animation; asleep after 10 min idle
 - [x] 6. Speech bubble: action + stage, most recent session, fade after done
   - Check: matches the live session; no stage line when `PROGRESS.md` is missing
-- [ ] 7. Details panel (left click): all sessions, stage bars, timers, last 5 actions
-  - Check: two Code tab sessions at once both appear correctly — passes with two fake sessions; real check after install
+- [x] 7. Details panel (left click): all sessions, stage bars, timers, last 5 actions
+  - Check: two Code tab sessions at once both appear correctly — passed live: a Code session and a Chat session shown together (2026-11-23)
 - [x] 8. Right-click menu: Hide, Mute, Sleep/Wake, Always on top, Size, Start with Windows, Quit
   - Check: every item works; settings survive a restart
 - [x] 9. Alerts: synthesized chimes + waiting hop
@@ -28,7 +28,7 @@ Rules: one stage at a time · run the check · tick it · one status line · wai
 - [x] 10. Pet care: XP, levels, accessories, hunger/happiness/energy, Feed and Play
   - Check: numbers follow the rules in `CLAUDE.md`; state survives a restart
 - [ ] 11. Packaging: `Molina.exe` (PyInstaller one-folder) + `README.md` (install, use, uninstall)
-  - Check: runs on the owner's PC without the venv — built (113 MB) and ran with no venv on PATH; owner to confirm
+  - Check: runs on the owner's PC without the venv — Bitdefender quarantines/blocks writing Molina.exe; running from source meanwhile
 - [ ] 12. One day of real use, then a fix list
   - Check: owner signs off
 

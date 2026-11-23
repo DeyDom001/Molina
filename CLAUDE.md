@@ -30,6 +30,7 @@ Molina window (PySide6) ──polls every 300 ms──▶ sessions\*.json + pet.
 - **One file per session** avoids write clashes when several sessions run at once.
 - **Atomic writes:** write `*.tmp`, then `os.replace`.
 - The window never talks to Claude Code. It only reads the state files.
+- **Claude Chat** (no hooks): `molina\chat_watch.ps1`, started by the window, reads the Claude app's accessibility tree once a second (`Stop response` = busy, `<step> running` = current step, gone = done) and writes `sessions\claude-chat.json` in the same format. It only sees the chat on screen.
 
 ### Folder layout
 ```

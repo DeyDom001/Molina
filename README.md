@@ -18,7 +18,7 @@ Needs Windows, Python 3.12, and this folder at `D:\Claude Code\Molina`.
    - from source: `.venv\Scripts\pythonw -m molina`
    - or build the exe: `.venv\Scripts\python setup\build_exe.py`, then run `dist\Molina\Molina.exe`. Some antivirus tools (Bitdefender, for example) quarantine unsigned PyInstaller exes. If that happens, run from source instead.
 
-New Claude Code sessions (terminal or the desktop app's Code tab) now update her.
+New Claude Code sessions (terminal or the desktop app's Code tab) now update her. Claude **Chat** in the desktop app is followed too: while a reply is being written she shows its current step ("Searching the web", "Reading a page", "Thinking…") and then **Done**. Chat has no hooks, so this reads the app window. It only works while the chat is on screen, and an app update may need the labels adjusting in `molina\chat_watch.ps1`.
 
 ## Use
 
