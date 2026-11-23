@@ -8,6 +8,8 @@ from PySide6.QtWidgets import QFrame, QLabel, QProgressBar, QVBoxLayout, QWidget
 from molina import state
 from molina.ui import ACCENT, BG, BORDER, MUTED, TEXT, stage_line
 
+MAX_SHOWN = 3  # sessions listed in the panel
+
 STYLE = f"""
 QWidget {{ background: {BG}; color: {TEXT}; font-size: 9pt; }}
 #panel {{ border: 1px solid {BORDER}; border-radius: 8px; }}
@@ -72,11 +74,14 @@ class Panel(QWidget):
         self.move(max(geo.left(), min(x, geo.right() - self.width())), max(geo.top(), min(y, geo.bottom() - self.height())))
 
     def refresh(self):
-        sessions = self.pet.sessions
+        everything = self.pet.sessions  # most recent first
+        # the 3 most recent, but never hide one that needs the owner (stable sort keeps recency)
+        sessions = sorted(everything, key=lambda s: s["state"] != "waiting")[:MAX_SHOWN]
+        hidden = len(everything) - len(sessions)
         if self.selected not in [s["session_id"] for s in sessions]:
             self.selected = sessions[0]["session_id"] if sessions else None
         extra = self.pet.care.panel_sig()
-        sig = json.dumps([sessions, self.selected, [duration(s["started"]) for s in sessions], extra], default=str)
+        sig = json.dumps([sessions, hidden, self.selected, [duration(s["started"]) for s in sessions], extra], default=str)
         if sig == self.sig:  # rebuild only on change, so buttons are not swapped out mid-click
             return
         self.sig = sig
@@ -90,6 +95,8 @@ class Panel(QWidget):
             lay.addWidget(label("No active Claude Code sessions.", muted=True))
         for s in sessions:
             lay.addWidget(self.row(s))
+        if hidden:
+            lay.addWidget(label(f"+{hidden} older session{'s' * (hidden > 1)} hidden", muted=True))
         sel = next((s for s in sessions if s["session_id"] == self.selected), None)
         if sel:
             lay.addWidget(label(f"LAST ACTIONS · {sel.get('project', '')}", title=True))
