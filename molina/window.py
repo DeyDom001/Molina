@@ -6,7 +6,7 @@ from PySide6.QtCore import QPoint, Qt, QTimer
 from PySide6.QtGui import QGuiApplication, QIcon, QPainter
 from PySide6.QtWidgets import QApplication, QMenu, QSystemTrayIcon, QWidget
 
-from molina import sprites, state
+from molina import sprites, state, ui
 
 SPRITE = 32       # base sprite size in px
 BUBBLE_H = 52     # room above her for the speech bubble
@@ -83,14 +83,18 @@ class PetWindow(QWidget):
         if anim != self.anim:
             self.anim, self.tick = anim, 0
 
+    def current(self):
+        """The session to show: one that needs the owner first, else the most recently active."""
+        return next((s for s in self.sessions if s["state"] == "waiting"), self.sessions[0] if self.sessions else None)
+
     def pick_anim(self):
         if self.oneoff and time.time() < self.oneoff[1]:
             return self.oneoff[0]
         if self.manual_sleep or time.time() - self.last_activity > 600:
             return "asleep"
-        if not self.sessions:
+        s = self.current()
+        if not s:
             return "idle"
-        s = self.sessions[0]
         if s["state"] == "done" and state.age(s["last_event"]) > 10:
             return "idle"
         return s["state"] if s["state"] in sprites.STATES else "idle"
@@ -109,6 +113,10 @@ class PetWindow(QWidget):
     def paintEvent(self, _):
         x, y, _, _ = self.pet_rect()
         p = QPainter(self)
+        s = self.current()
+        if s and self.anim != "asleep":
+            fade = 11 - state.age(s["last_event"]) if s["state"] == "done" else 1  # fade out 10 s after done
+            ui.paint_bubble(p, WIDTH, BUBBLE_H - 2, [s.get("action"), ui.stage_line(s)], min(1, fade))
         p.drawPixmap(x, y, sprites.pixmap(self.anim, self.tick, self.cfg["scale"], self.blinking()))
         p.end()
 
