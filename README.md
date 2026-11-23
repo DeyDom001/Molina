@@ -16,7 +16,7 @@ Needs Windows, Python 3.12, and this folder at `D:\Claude Code\Molina`.
    ```
 3. Start her:
    - from source: `.venv\Scripts\pythonw -m molina`
-   - or build the exe: `.venv\Scripts\python setup\build_exe.py`, then run `dist\Molina\Molina.exe`
+   - or build the exe: `.venv\Scripts\python setup\build_exe.py`, then run `dist\Molina\Molina.exe`. Some antivirus tools (Bitdefender, for example) quarantine unsigned PyInstaller exes. If that happens, run from source instead.
 
 New Claude Code sessions (terminal or the desktop app's Code tab) now update her.
 
