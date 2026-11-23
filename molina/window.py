@@ -7,6 +7,7 @@ from PySide6.QtGui import QGuiApplication, QIcon, QPainter
 from PySide6.QtWidgets import QApplication, QMenu, QSystemTrayIcon, QWidget
 
 from molina import sprites, state, ui
+from molina.panel import Panel
 
 SPRITE = 32       # base sprite size in px
 BUBBLE_H = 52     # room above her for the speech bubble
@@ -34,6 +35,7 @@ class PetWindow(QWidget):
         self.apply_scale()
         self.restore_position()
         self.tray = self.make_tray()
+        self.panel = Panel(self)
 
     # --- settings -------------------------------------------------------
     def save(self):
@@ -143,4 +145,4 @@ class PetWindow(QWidget):
                 self.clicked()
 
     def clicked(self):
-        pass
+        self.panel.open()
