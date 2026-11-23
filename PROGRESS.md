@@ -1,7 +1,7 @@
 # Molina — PROGRESS
 
-**Now:** Stage 2 real test — owner runs `setup\install.py` (auto mode blocked Claude from editing settings.json), then the owner checks for stages 2, 4, 7, 11
-**Next:** Stage 12 — one day of real use, then a fix list
+**Now:** Stage 12 — one day of real use (Code + Chat), then a fix list
+**Next:** —
 
 Rules: one stage at a time · run the check · tick it · one status line · wait for the owner's OK.
 
@@ -27,8 +27,8 @@ Rules: one stage at a time · run the check · tick it · one status line · wai
   - Check: approval prompt → hop + rising chime; repeat ≤ once per 60 s; Mute silences it
 - [x] 10. Pet care: XP, levels, accessories, hunger/happiness/energy, Feed and Play
   - Check: numbers follow the rules in `CLAUDE.md`; state survives a restart
-- [ ] 11. Packaging: `Molina.exe` (PyInstaller one-folder) + `README.md` (install, use, uninstall)
-  - Check: runs on the owner's PC without the venv — Bitdefender quarantines/blocks writing Molina.exe; running from source meanwhile
+- [x] 11. Packaging: `Molina.exe` (PyInstaller one-folder) + `README.md` (install, use, uninstall)
+  - Check: runs on the owner's PC without the venv — owner chose to run from source (`pythonw -m molina`) because Bitdefender ATD blocks Molina.exe (2026-11-23)
 - [ ] 12. One day of real use, then a fix list
   - Check: owner signs off
 
