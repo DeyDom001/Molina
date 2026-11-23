@@ -6,7 +6,7 @@ A small pixel axolotl that lives on your Windows desktop and shows what Claude C
 
 Needs Windows 10/11, [Python 3.10+](https://www.python.org/downloads/) (3.12 tested) and [Claude Code](https://claude.com/claude-code).
 
-1. Get the code: **Code → Download ZIP** on GitHub and unzip it anywhere, or `git clone REPO_URL`. Open PowerShell in that folder.
+1. Get the code: **Code → Download ZIP** on [the GitHub page](https://github.com/DeyDom001/Molina) and unzip it anywhere, or `git clone https://github.com/DeyDom001/Molina.git`. Open PowerShell in that folder.
 2. Create the venv (once):
    ```powershell
    py -m venv .venv; .venv\Scripts\python -m pip install PySide6
