@@ -83,8 +83,9 @@ D:\Claude Code\Molina\
 | Use | Color |
 |---|---|
 | Outline | `#141413` |
-| Body | `#4A4845` |
-| Belly / shading | `#6B6862` |
+| Body (pink, leucistic axolotl) | `#F2B8B2` |
+| Belly / shading | `#FADBD6` |
+| Cheeks | `#D97757` |
 | Gills (accent) | `#D97757` |
 | Gill tips / highlights | `#E8A387` |
 | Eyes / bubble text | `#F0EEE6` |
