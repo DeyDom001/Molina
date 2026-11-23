@@ -57,3 +57,7 @@ This removes only Molina's hook entries (after a backup) and asks before deletin
 | `setup\` | install, uninstall, build the exe |
 | `tools\` | `send_fake.py` (test without Claude: `--test` checks every fixture), `sprite_preview.py` |
 | `samples\` | fake hook events and a sample `PROGRESS.md` |
+
+## License
+
+[MIT](LICENSE): free to use, copy, change and share, as long as the copyright notice stays with it.
