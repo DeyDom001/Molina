@@ -14,6 +14,7 @@ from molina.sound import Sounds
 SPRITE = 32       # base sprite size in px
 BUBBLE_H = 52     # room above her for the speech bubble
 WIDTH = 300       # fixed width so the window never jumps; transparent pixels let clicks through
+COMMANDS = ("show", "hide", "sleep", "wake", "mute", "unmute", "status", "quit")
 
 
 class PetWindow(QWidget):
@@ -86,6 +87,31 @@ class PetWindow(QWidget):
         a.setCheckable(True)
         a.setChecked(on)
         a.toggled.connect(fn)
+
+    def command(self, cmd):
+        """Run a control command (from `python -m molina <cmd>` or /pet) and return a one-line reply."""
+        if cmd == "show":
+            self.show()
+            self.raise_()
+        elif cmd == "hide":
+            self.hide()
+        elif cmd in ("sleep", "wake") and self.manual_sleep != (cmd == "sleep"):
+            self.toggle_sleep()
+        elif cmd in ("mute", "unmute"):
+            self.set("muted", cmd == "mute")
+        elif cmd == "quit":
+            QTimer.singleShot(200, QApplication.quit)  # after the reply has gone out
+            return "Molina: bye!"
+        elif cmd not in COMMANDS:
+            return f"Molina: unknown command {cmd!r}"
+        s = self.current()
+        return " · ".join([
+            "Molina: " + ("visible" if self.isVisible() else "hidden"),
+            "asleep" if self.anim == "asleep" else "awake",
+            "sound off" if self.cfg["muted"] else "sound on",
+            f"level {self.care.p['level']}",
+            f"{len(self.sessions)} session(s)",
+        ] + ([f"now: {s.get('project')}: {s.get('action')}"] if s else []))
 
     def toggle_sleep(self):
         self.manual_sleep = not self.manual_sleep

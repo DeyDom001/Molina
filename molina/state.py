@@ -23,7 +23,13 @@ def write_json(path, data):
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp = path.with_suffix(".tmp")
     tmp.write_text(json.dumps(data, indent=1), encoding="utf-8")
-    os.replace(tmp, path)
+    for _ in range(5):  # antivirus or a reader can hold the file for a moment
+        try:
+            os.replace(tmp, path)
+            return True
+        except PermissionError:
+            time.sleep(0.05)
+    return False  # skip this save; callers save again soon with newer data
 
 
 def load_config():

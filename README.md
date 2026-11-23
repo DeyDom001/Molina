@@ -33,6 +33,7 @@ New Claude Code sessions (terminal or the desktop app's Code tab) now update her
 | Left click | Details: every session, stage bar, time running, last 5 actions, care stats, **Feed** and **Play** |
 | Right click | Hide · Mute sounds · Sleep/Wake · Always on top · Size 2×–5× · Start with Windows · Quit |
 | Tray icon | Show/Hide, Quit |
+| `.venv\Scripts\python -m molina <cmd>` | Control her from a shell: `show`, `hide`, `sleep`, `wake`, `mute`, `unmute`, `status`, `quit` |
 
 - The bubble shows the session that needs you first, otherwise the most recently active one. It fades 10 s after **Done**.
 - **Needs you:** she hops and plays a rising chime, repeated at most once a minute while you're still needed.
