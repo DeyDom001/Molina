@@ -6,6 +6,7 @@ Add-Type -AssemblyName UIAutomationClient, UIAutomationTypes
 $AE = [Windows.Automation.AutomationElement]
 $All = [Windows.Automation.TreeScope]::Descendants
 $StopCond = New-Object Windows.Automation.PropertyCondition($AE::NameProperty, 'Stop response')
+$DoneCond = New-Object Windows.Automation.PropertyCondition($AE::NameProperty, 'Claude finished the response')
 $BtnCond = New-Object Windows.Automation.PropertyCondition($AE::ControlTypeProperty, [Windows.Automation.ControlType]::Button)
 $Utf8 = New-Object Text.UTF8Encoding $false   # no BOM: Python's json reader rejects it
 $started = $null; $last = ''; $recent = @(); $title = 'Claude chat'
@@ -35,7 +36,7 @@ function StepState($step) {
 while (Get-Process -Id $ParentPid -ErrorAction SilentlyContinue) {
     try {
         $p = Get-Process claude -ErrorAction SilentlyContinue | Where-Object MainWindowHandle -ne 0 | Select-Object -First 1
-        $busy = $false
+        $busy = $false; $root = $null
         if ($p) {
             $root = $AE::FromHandle($p.MainWindowHandle)
             $busy = [bool]$root.FindFirst($All, $StopCond)
@@ -48,8 +49,8 @@ while (Get-Process -Id $ParentPid -ErrorAction SilentlyContinue) {
             $step = $names | Where-Object { $_ -cmatch ' running$' } | Select-Object -First 1  # the live step
             if ($step) { $step = $step -creplace ' running$', ''; $now = @((StepState $step), $step) }
             else { $now = @('thinking', $Thinking) }
-        } elseif ($started) {
-            $now = @('done', 'Done')
+        } elseif ($started -and $root -and $root.FindFirst($All, $DoneCond)) {
+            $now = @('done', 'Done')   # only on the app's own "finished"; a tab switch or minimise also hides "Stop response"
         } else { $now = $null }
         if ($now -and "$now" -ne $last) { Save $now[0] $now[1]; $last = "$now" }
         if ($now -and $now[0] -eq 'done') { $started = $null }

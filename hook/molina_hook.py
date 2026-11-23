@@ -16,7 +16,8 @@ CHECKBOX = re.compile(r"^\s*- \[([ xX])\]\s*(.*)")
 
 
 def now():
-    return time.strftime("%Y-%m-%dT%H:%M:%S%z")
+    s = time.strftime("%Y-%m-%dT%H:%M:%S%z")
+    return s[:-2] + ":" + s[-2:]  # +07:00, not +0700: Python 3.10's fromisoformat needs the colon
 
 
 def short(text, n):
@@ -55,20 +56,18 @@ def stage(cwd, old):
         return {"stage_mtime": None, "stage_index": None, "stage_total": None, "stage_text": None}
     if old.get("stage_mtime") == mtime:
         return {k: old.get(k) for k in ("stage_mtime", "stage_index", "stage_total", "stage_text")}
-    done = total = 0
-    text = None
+    total = 0
+    index = text = None
     with open(path, encoding="utf-8", errors="replace") as f:
         for line in f:
             m = CHECKBOX.match(line)
             if m:
                 total += 1
-                if m.group(1) == " ":
-                    text = text or short(m.group(2), 60)
-                else:
-                    done += 1
+                if m.group(1) == " " and index is None:  # the first open box is the current stage
+                    index, text = total, short(m.group(2), 60)
     if not total:
         return {"stage_mtime": mtime, "stage_index": None, "stage_total": None, "stage_text": None}
-    return {"stage_mtime": mtime, "stage_index": min(done + 1, total), "stage_total": total, "stage_text": text}
+    return {"stage_mtime": mtime, "stage_index": index or total, "stage_total": total, "stage_text": text}
 
 
 def write_json(path, data):

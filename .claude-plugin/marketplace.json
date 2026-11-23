@@ -1,0 +1,6 @@
+{
+  "name": "molina",
+  "description": "Molina, a pixel axolotl desktop pet for Claude Code: the /pet command",
+  "owner": { "name": "DeyDom001" },
+  "plugins": [{ "name": "molina-pet", "source": "./plugin/molina-pet" }]
+}

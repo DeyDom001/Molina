@@ -39,7 +39,8 @@ D:\Claude Code\Molina\
   hook\              molina_hook.py (the only file Claude Code runs)
   molina\            app package: __main__, window, sprites, ui (bubble), panel, care, sound, state, startup
   setup\             install.py, uninstall.py, build_exe.py
-  tools\             send_fake.py, sprite_preview.py, test_hook.py
+  tools\             send_fake.py (--test: hook fixtures), test_care.py, sprite_preview.py
+  plugin\molina-pet\ the /pet Claude Code plugin (listed by .claude-plugin\marketplace.json)
   samples\           fake_events\*.json (fixtures), PROGRESS.md sample
 ```
 

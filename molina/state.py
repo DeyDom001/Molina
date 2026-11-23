@@ -29,7 +29,14 @@ def write_json(path, data):
             return True
         except PermissionError:
             time.sleep(0.05)
-    return False  # skip this save; callers save again soon with newer data
+    if path not in _save_failed:  # say so once per file; callers save again soon with newer data
+        _save_failed.add(path)
+        with open(HOME / "hook_errors.log", "a", encoding="utf-8") as f:
+            f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} Molina could not save {path} (locked, e.g. by antivirus)\n")
+    return False
+
+
+_save_failed = set()
 
 
 def load_config():
@@ -46,14 +53,14 @@ def sessions():
     out = []
     for p in SESSIONS.glob("*.json"):
         s = read_json(p, None)
-        if not isinstance(s, dict) or "last_event" not in s:
+        try:
+            a = age(s["last_event"])
+        except (TypeError, KeyError, ValueError):  # not a session file, or a timestamp we can't read
             continue
-        a = age(s["last_event"])
-        if s.get("ended"):
-            if a > 120:
-                p.unlink(missing_ok=True)
-            continue
-        if a > 12 * 3600:  # shortcut: a crashed session never sends SessionEnd; hide it after 12 h
+        # ended: gone after 2 min; never ended (terminal closed, crash): gone after 12 h
+        if a > (120 if s.get("ended") else 12 * 3600):
+            p.unlink(missing_ok=True)
+        if s.get("ended") or a > 12 * 3600:
             continue
         out.append(s)
     return sorted(out, key=lambda s: age(s["last_event"]))

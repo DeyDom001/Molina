@@ -20,6 +20,11 @@ Needs Windows 10/11, [Python 3.10+](https://www.python.org/downloads/) (3.12 tes
    Start-Process .venv\Scripts\pythonw.exe -ArgumentList '-m','molina'
    ```
    Right-click her → **Start with Windows** to have her start on her own after that.
+5. Optional, the `/pet` command in Claude Code (`/pet on`, `off`, `hide`, `show`, `sleep`, `wake`, `mute`, `unmute`, `status`). In a terminal Claude Code session:
+   ```
+   /plugin install molina-pet --marketplace DeyDom001/Molina
+   ```
+   Answer `y` to add the marketplace, then pick a scope (user is fine). From a shell, the same is `claude plugin install molina-pet --marketplace DeyDom001/Molina`. In the desktop app: **+** next to the prompt box → **Plugins** → **Add marketplace** `DeyDom001/Molina` → **Add plugin**. `/pet` finds Molina's folder from step 3, so do step 3 first.
 
 Optional exe: `.venv\Scripts\python -m pip install PyInstaller; .venv\Scripts\python setup\build_exe.py` builds `dist\Molina\Molina.exe`. Some antivirus tools (Bitdefender's Advanced Threat Defense, for example) block unsigned PyInstaller exes. Running from source works the same.
 
@@ -33,6 +38,7 @@ New Claude Code sessions (terminal or the desktop app's Code tab) now update her
 | Left click | Details: every session, stage bar, time running, last 5 actions, care stats, **Feed** and **Play** |
 | Right click | Hide · Mute sounds · Sleep/Wake · Always on top · Size 2×–5× · Start with Windows · Quit |
 | Tray icon | Show/Hide, Quit |
+| `/pet <cmd>` in Claude Code | Same commands, from the prompt (step 5) |
 | `.venv\Scripts\python -m molina <cmd>` | Control her from a shell: `show`, `hide`, `sleep`, `wake`, `mute`, `unmute`, `status`, `quit` |
 
 - The bubble shows the session that needs you first, otherwise the most recently active one. It fades 10 s after **Done**.
