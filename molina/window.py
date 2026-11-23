@@ -24,6 +24,12 @@ class PetWindow(QWidget):
         self.next_blink = time.time() + 4
         self.timer = QTimer(self, interval=1000 // sprites.FPS, timeout=self.step)
         self.timer.start()
+        self.sessions = []
+        self.manual_sleep = False
+        self.oneoff = None  # (anim, until) for eating / playing
+        self.last_activity = time.time()
+        self.poller = QTimer(self, interval=300, timeout=self.poll)
+        self.poller.start()
         self.apply_on_top()
         self.apply_scale()
         self.restore_position()
@@ -67,6 +73,27 @@ class PetWindow(QWidget):
 
     def tray_icon(self):
         return QIcon(sprites.pixmap("idle", 0, 1))
+
+    # --- live state -----------------------------------------------------
+    def poll(self):
+        self.sessions = state.sessions()
+        if self.sessions:
+            self.last_activity = max(self.last_activity, time.time() - state.age(self.sessions[0]["last_event"]))
+        anim = self.pick_anim()
+        if anim != self.anim:
+            self.anim, self.tick = anim, 0
+
+    def pick_anim(self):
+        if self.oneoff and time.time() < self.oneoff[1]:
+            return self.oneoff[0]
+        if self.manual_sleep or time.time() - self.last_activity > 600:
+            return "asleep"
+        if not self.sessions:
+            return "idle"
+        s = self.sessions[0]
+        if s["state"] == "done" and state.age(s["last_event"]) > 10:
+            return "idle"
+        return s["state"] if s["state"] in sprites.STATES else "idle"
 
     # --- animation ------------------------------------------------------
     def step(self):
