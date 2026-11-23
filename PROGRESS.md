@@ -8,7 +8,7 @@ Rules: one stage at a time · run the check · tick it · one status line · wai
 - [x] 0. Setup: create `D:\Claude Code\Molina` structure, venv, install PySide6 + PyInstaller, `git init`
   - Check: `python -c "import PySide6"` works inside the venv
 - [x] 1. Hook script + state files (`hook\molina_hook.py`), tested with fake events only
-  - Check: every fixture in `tools\fake_events\` gives the right state/action/stage; each run < 100 ms; a broken input still exits 0 and logs the error
+  - Check: every fixture in `samples\fake_events\` (`python tools\send_fake.py --test`) gives the right state/action/stage; each run < 100 ms; a broken input still exits 0 and logs the error
 - [ ] 2. Installer + uninstaller (backup + merge), then a real test from the Code tab — code done, tested on a copy; real install pending owner
   - Check: backup file exists; existing hooks and mods untouched; a real session writes `sessions\<id>.json`; uninstall removes only Molina's entries
 - [x] 3. Window: transparent, frameless, always on top, drag, position memory, tray icon
