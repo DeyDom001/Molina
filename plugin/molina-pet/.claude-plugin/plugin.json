@@ -1,6 +1,6 @@
 {
   "name": "molina-pet",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "MIT",
-  "description": "/pet: start, hide, show, sleep, wake, mute or quit Molina, the desktop axolotl that shows what Claude is doing"
+  "description": "Starts Molina, the desktop axolotl that shows what Claude is doing, with each session; /pet hides, shows, sleeps, wakes, mutes or quits her"
 }

@@ -24,6 +24,17 @@ export function dirFromSettings(text: string): string | undefined {
   return hook?.[1]?.replace(/\\\\/g, '\\').replace(/\//g, '\\')
 }
 
+/** Starts Molina if she isn't running; true when she was started. A running Molina is left as she is (hidden stays hidden). */
+export async function startIfStopped($: EngineInterface, dir: string): Promise<boolean> {
+  const ran = await $.process.run([`${dir}\\.venv\\Scripts\\python.exe`, '-m', 'molina', 'status'], { cwd: dir, timeoutMs: 10000 })
+  if (ran.exitCode !== 1) return false
+  // Detached through PowerShell, so she outlives this call.
+  const q = (s: string) => s.replace(/'/g, "''")
+  await $.process.run(['powershell', '-NoProfile', '-Command',
+    `Start-Process -FilePath '${q(dir)}\\.venv\\Scripts\\pythonw.exe' -ArgumentList '-m','molina' -WorkingDirectory '${q(dir)}'`])
+  return true
+}
+
 export const register: Register = on => {
   on('session.start', async ($, e, next) => {
     await $.command.register({
@@ -32,6 +43,8 @@ export const register: Register = on => {
       argumentHint: 'on|off|show|hide|sleep|wake|mute|unmute|status',
       immediate: true,
     })
+    const dir = await molinaDir($)
+    if (dir) await startIfStopped($, dir).catch(() => false)  // she must never break a session start
     return next(e)
   })
 
@@ -42,20 +55,8 @@ export const register: Register = on => {
     const dir = await molinaDir($)
     if (!dir) return { text: 'Molina is not installed: run `setup\\install.py` from her folder first.', isTextDisplayOnly: true }
 
-    const python = `${dir}\\.venv\\Scripts\\python.exe`
-    const ran = await $.process.run([python, '-m', 'molina', cmd === 'show' ? 'status' : cmd], { cwd: dir, timeoutMs: 10000 })
-    const reply = ran.stdout.trim()
-    if (cmd === 'show' && ran.exitCode === 1) {
-      // Not running: start her detached through PowerShell, so she outlives this call.
-      const q = (s: string) => s.replace(/'/g, "''")
-      await $.process.run(['powershell', '-NoProfile', '-Command',
-        `Start-Process -FilePath '${q(dir)}\\.venv\\Scripts\\pythonw.exe' -ArgumentList '-m','molina' -WorkingDirectory '${q(dir)}'`])
-      return { text: 'Molina is waking up on your desktop.', isTextDisplayOnly: true }
-    }
-    if (cmd === 'show') {
-      const shown = await $.process.run([python, '-m', 'molina', 'show'], { cwd: dir, timeoutMs: 10000 })
-      return { text: shown.stdout.trim(), isTextDisplayOnly: true }
-    }
-    return { text: reply || ran.stderr.trim() || `Molina did not answer (exit ${ran.exitCode}).`, isTextDisplayOnly: true }
+    if (cmd === 'show' && await startIfStopped($, dir)) return { text: 'Molina is waking up on your desktop.', isTextDisplayOnly: true }
+    const ran = await $.process.run([`${dir}\\.venv\\Scripts\\python.exe`, '-m', 'molina', cmd], { cwd: dir, timeoutMs: 10000 })
+    return { text: ran.stdout.trim() || ran.stderr.trim() || `Molina did not answer (exit ${ran.exitCode}).`, isTextDisplayOnly: true }
   })
 }

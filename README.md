@@ -20,7 +20,7 @@ Needs Windows 10/11, [Python 3.10+](https://www.python.org/downloads/) (3.12 tes
    Start-Process .venv\Scripts\pythonw.exe -ArgumentList '-m','molina'
    ```
    Right-click her → **Start with Windows** to have her start on her own after that.
-5. Optional, the `/pet` command in Claude Code (`/pet on`, `off`, `hide`, `show`, `sleep`, `wake`, `mute`, `unmute`, `status`). In a terminal Claude Code session:
+5. Optional, the `molina-pet` plugin: it starts Molina whenever a Claude Code session opens (if she isn't running already; a hidden Molina stays hidden) and adds the `/pet` command (`/pet on`, `off`, `hide`, `show`, `sleep`, `wake`, `mute`, `unmute`, `status`). In a terminal Claude Code session:
    ```
    /plugin install molina-pet --marketplace DeyDom001/Molina
    ```
