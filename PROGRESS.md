@@ -1,7 +1,9 @@
 # Molina — PROGRESS
 
 **Now:** Stage 12 — one day of real use (Code + Chat), then a fix list
-**Next:** upload `skill\molina-setup.zip` to Agensi (free) after friend testing (`SKILL.md` + `setup.ps1`, rebuild with `Compress-Archive -Path skill\molina-setup\* -DestinationPath skill\molina-setup.zip -Force`)
+**Done 2026-11-25:** the `molina-pet` plugin (0.2.0) starts Molina when a Claude Code session opens, so `/pet on` isn't needed (PR #1, not yet tried live). Friend kit `Molina-friend-setup.zip` (project root, git-ignored): `Install-Molina.ps1` downloads the GitHub zip (no git needed) and runs `setup.ps1`; `READ ME FIRST.txt` has every command. Tested into a scratch folder with `MOLINA_SETTINGS` pointed at a dummy file. Works on the free plan through the Chat watcher; plugins only load in Claude Code (paid), not in Chat.
+**Check after today's app update:** one Chat reply still shows its steps and Done (the watcher reads the app's accessibility labels).
+**Next:** test the friend kit on a friend's laptop, then upload `skill\molina-setup.zip` to Agensi (free) after friend testing (`SKILL.md` + `setup.ps1`, rebuild with `Compress-Archive -Path skill\molina-setup\* -DestinationPath skill\molina-setup.zip -Force`)
 
 Rules: one stage at a time · run the check · tick it · one status line · wait for the owner's OK.
 
